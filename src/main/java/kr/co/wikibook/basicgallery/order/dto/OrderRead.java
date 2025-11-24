@@ -12,11 +12,11 @@ import java.util.List;
 @Setter
 @Builder
 public class OrderRead {
-    private Integer id;
-    private String name;
-    private String address;
-    private String payment;
-    private Long amount;
-    private LocalDateTime created;
-    private List<ItemRead> items;
+    private Integer id; // 주문 아이디
+    private String name; // 주문자명
+    private String address; // 배송 주소
+    private String payment; // 결제 수단
+    private Long amount; // 결제 금액
+    private LocalDateTime created; // 생성 일자
+    private List<ItemRead> items; // 상품 목록
 }

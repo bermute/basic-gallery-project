@@ -52,6 +52,7 @@ public class Order {
     }
 
     // 주문 조회 DTO로 변환
+    // 엔티티 객체를 주문 조회 dto 로 변환 /데이터 조회용
     public OrderRead toRead(){
         return OrderRead.builder()
                 .id(id)
