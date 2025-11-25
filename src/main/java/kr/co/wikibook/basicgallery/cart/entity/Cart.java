@@ -1,6 +1,7 @@
 package kr.co.wikibook.basicgallery.cart.entity;
 
 import jakarta.persistence.*;
+import kr.co.wikibook.basicgallery.cart.dto.CartRead;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -35,5 +36,13 @@ public class Cart {
     public Cart(Integer memberId, Integer itemId){ //
         this.memberId = memberId;
         this.itemId = itemId;
+    }
+
+    public CartRead toRead(){
+        // 엔티티 객체를 장바구니 조회 dto
+        return CartRead.builder()
+                .id(id)
+                .itemId(itemId)
+                .build();
     }
 }
