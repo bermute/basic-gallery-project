@@ -43,6 +43,7 @@ public class BaseCartService implements CartService {
     }
 
     @Override
+    @Transactional
     public void save(Cart cart) { // 장바구니 서비스 인터페이스의 메서드를 구현합니다.
         cartRepository.save(cart);
     }
