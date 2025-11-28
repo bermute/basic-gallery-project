@@ -19,6 +19,7 @@ public class OrderController {
     private final AccountHelper accountHelper;
     private final OrderService orderService;
 
+    // 주문 목록 조회
     @GetMapping("/api/orders")
     public ResponseEntity<?> readAll(HttpServletRequest req){ //로그인 회원의 전체 주문목록을 조회
         // 로그인 회원 아이디
@@ -30,6 +31,7 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
+    // 주문 상세 조회
     @GetMapping("/api/orders/{id}")
     public ResponseEntity<?> read(HttpServletRequest req, @PathVariable Integer id){  // 로그인 회원의 특정 주문 내역을 조회하는 메서드 입니다.
         // 로그인 회원 아이디
@@ -45,6 +47,7 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
+    // 주문 삽입
     @PostMapping("/api/orders")
     public ResponseEntity<?> add(HttpServletRequest req, @RequestBody OrderRequest orderReq){ // 신규 주문 내역을 추가하는 메서드 입니다.
         //로그인 회원 아이디
