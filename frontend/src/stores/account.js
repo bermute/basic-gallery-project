@@ -4,6 +4,7 @@ export const useAccountStore = defineStore("account", { // pinia 에서 제공�
     state: () => ({
         checked: false, // 로그인 체크 여부 프로퍼티
         loggedIn: false, // 로그인 여부를 나타내는 프로퍼티
+        accessToken: "", // 액세스 토큰 프로퍼티
     }),
     actions: {
         setChecked(val) {  // 로그인 체크 여부 값을 수정하는 메서드
@@ -11,6 +12,9 @@ export const useAccountStore = defineStore("account", { // pinia 에서 제공�
         },
         setLoggedIn(val) {  // 사용자의 로그인 여부 값을 수정 하는 메서드
             this.loggedIn = val;
+        },
+        setAccessToken(val) { // 액세스 토큰의 값을 수정하는 메서드
+            this.accessToken = val;
         },
     },
 });

@@ -2,6 +2,8 @@
     import {reactive} from "vue";
     import { login } from "@/services/accountService";
     import { useRouter } from "vue-router";
+    import { useAccountStore } from "@/stores/account"; // 계정 스토어 객체 생성 시 사용하는 메서드를 임포트
+
 
     //반응형 상태
     const state = reactive({ // 반응형 상태 로그인 데이터를 입력위한 form 객체를 입력하고 값 초기화
@@ -13,12 +15,16 @@
     //라우터 객체
     const router = useRouter(); //라우터 기능을 제공하는 객체
 
+    // 계정 스토어
+    const accountStore = useAccountStore(); // 계정 스토어 객체
+
     //로그인 데이터 제출
     const submit = async () => { // 로그인 데이터를 제출하는 메서드
         const res =  await login(state.form);
 
         switch (res.status) {
             case 200:
+                accountStore.setAccessToken(res.data); // 로그인 성공시 응답받은 데이터를 계정 스토어의 액세스 토큰에 입력
                 await router.push("/");
                 break;
 
