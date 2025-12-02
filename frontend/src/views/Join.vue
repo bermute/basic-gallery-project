@@ -15,13 +15,31 @@ const state = reactive({ // 반응형 상태 회원가입 데이터를 입력위
 //라우터 객체
 const router = useRouter(); //라우터 기능을 제공하는 객체
 
-//회원가입 데이터 제출
-const submit = async () => { // 회원가입 데이터를 제출하는 메서드
-    const res =  await join(state.form);
-    if(res.status === 200){
-        window.alert("회원가입을 완료했습니다.");
-        await router.push("/");
-    }
+// 회원가입 데이터 제출
+const submit = async () => {
+  if (!state.form.name?.trim()) {
+    window.alert("이름을 입력해주세요.");
+    document.getElementById("name")?.focus();
+    return;
+  } else if (!state.form.loginId?.trim()) {
+    window.alert("이메일을 입력해주세요.");
+    document.getElementById("loginId")?.focus();
+    return;
+  } else if (!state.form.loginPw?.trim()) {
+    window.alert("패스워드를 입력해주세요.");
+    document.getElementById("loginPw")?.focus();
+    return;
+  }
+
+  const res = await join(state.form);
+
+  if (res.status === 200) {
+    window.alert("회원가입을 완료했습니다.");
+    await router.push("/");
+  } else if (res.status === 409) {
+    window.alert("이미 사용 중인 이메일입니다. 다른 값을 입력해주세요.");
+    document.getElementById("loginId")?.focus();
+  }
 };
 </script>
 

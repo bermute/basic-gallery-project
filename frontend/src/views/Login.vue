@@ -20,6 +20,16 @@
 
     //로그인 데이터 제출
     const submit = async () => { // 로그인 데이터를 제출하는 메서드
+        if (!state.form.loginId?.trim()) {
+            window.alert("이메일을 입력해주세요.");
+            document.getElementById("loginId")?.focus();
+            return;
+        } else if (!state.form.loginPw?.trim()) {
+            window.alert("패스워드를 입력해주세요.");
+            document.getElementById("loginPw")?.focus();
+            return;
+        }
+        
         const res =  await login(state.form);
 
         switch (res.status) {

@@ -2,6 +2,7 @@ package kr.co.wikibook.basicgallery.order.service;
 
 import jakarta.transaction.Transactional;
 import kr.co.wikibook.basicgallery.cart.service.CartService;
+import kr.co.wikibook.basicgallery.common.util.EncryptionUtils;
 import kr.co.wikibook.basicgallery.item.dto.ItemRead;
 import kr.co.wikibook.basicgallery.item.service.ItemService;
 import kr.co.wikibook.basicgallery.order.dto.OrderRead;
@@ -10,6 +11,8 @@ import kr.co.wikibook.basicgallery.order.entity.Order;
 import kr.co.wikibook.basicgallery.order.entity.OrderItem;
 import kr.co.wikibook.basicgallery.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,10 +28,17 @@ public class BaseOrderService implements OrderService{
     private final CartService cartService;
 
     // 주문 목록 조회
+//    @Override
+//    public List<OrderRead> findAll(Integer memberId) {
+//        // 결과값을 DTO로 변환 후 리턴
+//        return orderRepository.findAllByMemberIdOrderByIdDesc(memberId).stream().map(Order::toRead).toList();
+//    }
+
+    // 주문 목록 조회
     @Override
-    public List<OrderRead> findAll(Integer memberId) {
-        // 결과값을 DTO로 변환 후 리턴
-        return orderRepository.findAllByMemberIdOrderByIdDesc(memberId).stream().map(Order::toRead).toList();
+    public Page<OrderRead> findAll(Integer memberId, Pageable pageable) { // ③
+        Page<Order> orders = orderRepository.findAllByMemberIdOrderByIdDesc(memberId, pageable);
+        return orders.map(Order::toRead);
     }
 
     //주문 상세 조회
@@ -56,6 +66,7 @@ public class BaseOrderService implements OrderService{
         return null;
     }
 
+    //주문 내용 저장
     @Override
     @Transactional
     public void order(OrderRequest orderReq, Integer memberId) {
@@ -69,6 +80,11 @@ public class BaseOrderService implements OrderService{
 
         //주문 요청에 최종 결제 금액 입력
         orderReq.setAmount(amount);
+
+        // 결제 수단이 카드일 때 카드 번호 암호화
+        if ("card".equals(orderReq.getPayment())) {
+            orderReq.setCardNumber(EncryptionUtils.encrypt(orderReq.getCardNumber()));
+        }
 
         //주문 저장
         Order order = orderRepository.save(orderReq.toEntity(memberId));

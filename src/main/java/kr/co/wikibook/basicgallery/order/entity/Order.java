@@ -28,7 +28,7 @@ public class Order {
     @Column(length = 10, nullable = false)
     private String payment; // 결제 수단 필드
 
-    @Column(length = 16)
+    @Column(length = 50)
     private String cardNumber; // 카드 번호 필드
 
     @Column(nullable = false)

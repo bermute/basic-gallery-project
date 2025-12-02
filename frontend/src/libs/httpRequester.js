@@ -19,6 +19,27 @@ instance.interceptors.response.use((res) => {
                 window.location.replace("/");
                 return;
             }
+            
+            // (쿠키에 있는) 리프레시 토큰으로 액세스 토큰 요청
+            const res = await axios.get("/v1/api/account/token");
+
+            // 액세스 토큰
+            const accessToken = res.data;
+
+            // 계정 스토어
+            const accountStore = useAccountStore();
+
+            // 계정 스토어의 액세스 토큰 변경
+            accountStore.setAccessToken(accessToken);
+
+            // 요청 액세스 토큰 교체
+            config.headers.authorization = `Bearer ${accountStore.accessToken}`;
+
+            // 중복 재요청 방지를 위한 프로퍼티 추가
+            config.retried = true;
+
+            // 재요청
+            return instance(config);
 
      
         case 500:

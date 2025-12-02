@@ -6,6 +6,8 @@ import kr.co.wikibook.basicgallery.order.dto.OrderRead;
 import kr.co.wikibook.basicgallery.order.dto.OrderRequest;
 import kr.co.wikibook.basicgallery.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +23,14 @@ public class OrderController {
 
     // 주문 목록 조회
     @GetMapping("/api/orders")
-    public ResponseEntity<?> readAll(HttpServletRequest req){ //로그인 회원의 전체 주문목록을 조회
+    public ResponseEntity<?> readAll(HttpServletRequest req, Pageable pageable){ //로그인 회원의 전체 주문목록을 조회
         // 로그인 회원 아이디
         Integer memberId = accountHelper.getMemberId(req);
 
         //주문 목록
-        List<OrderRead> orders = orderService.findAll(memberId);
+//        List<OrderRead> orders = orderService.findAll(memberId);
+        Page<OrderRead> orders = orderService.findAll(memberId, pageable);
+
 
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }

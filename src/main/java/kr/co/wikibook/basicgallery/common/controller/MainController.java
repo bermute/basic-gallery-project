@@ -1,15 +1,13 @@
 package kr.co.wikibook.basicgallery.common.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping ("/v1")
+@Controller
 public class MainController {
-    @GetMapping("/api/greeting")
-    public String greet(){
-        return "Hello Spring"; // 문자열 출력
 
+    @GetMapping(value = {"/", "{path:[^.]*}", "{path1:[^.]*}/{path2:[^.]*}"}) // ①
+    public String index() {
+        return "/index.html";
     }
 }

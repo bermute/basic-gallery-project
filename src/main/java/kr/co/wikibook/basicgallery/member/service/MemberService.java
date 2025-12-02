@@ -14,4 +14,7 @@ public interface MemberService {
     // 매개변수로 로그인 아이디와 패스워드를 받습니다.
     // 리턴 타입으로 회원 엔티티를 지정합니다.
     Member find(String loginId, String loginPw);
+
+    // 회원 데이터 조회
+    Member find(String loginId);
 }

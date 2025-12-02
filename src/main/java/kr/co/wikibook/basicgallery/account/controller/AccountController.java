@@ -9,6 +9,7 @@ import kr.co.wikibook.basicgallery.account.helper.AccountHelper;
 import kr.co.wikibook.basicgallery.block.service.BlockService;
 import kr.co.wikibook.basicgallery.common.util.HttpUtils;
 import kr.co.wikibook.basicgallery.common.util.TokenUtils;
+import kr.co.wikibook.basicgallery.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class AccountController {
     private final AccountHelper accountHelper; // 스프링 컨테이너에 의해 의존성 주입될 계정 헬퍼 필드
     private final BlockService blockService; // ①
+    private final MemberService memberService; // ②
 
 
     @PostMapping("/api/account/join")
@@ -33,6 +35,12 @@ public class AccountController {
                 !StringUtils.hasLength(joinReq.getLoginPw())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        // 중복 로그인 아이디가 있으면
+        if (memberService.find(joinReq.getLoginId()) != null) { // ③
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
 
         accountHelper.join(joinReq);
         return new ResponseEntity<>(HttpStatus.OK);
